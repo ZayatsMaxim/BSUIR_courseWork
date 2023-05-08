@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Курсы zayct</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/sidenav.css">
+    <link rel="stylesheet" href="/styles/images.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="wrapper">
+
+        <nav id="sidebar" class>
+            <div class="sidebar-header">
+                <svg width="138" height="36" viewBox="0 0 138 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M103.28 26.12C104.88 26.8933 106.733 27.28 108.84 27.28C110.893 27.28 112.787 26.8667 114.52 26.04C116.253 25.1867 117.613 24.0133 118.6 22.52L114.92 20.04C114.227 21.0533 113.373 21.8 112.36 22.28C111.347 22.76 110.253 23 109.08 23C107.267 23 105.867 22.52 104.88 21.56C103.893 20.6 103.4 19.2933 103.4 17.64C103.4 16.0667 103.72 14.68 104.36 13.48C105 12.28 105.88 11.3467 107 10.68C108.12 9.98667 109.373 9.64 110.76 9.64C112.04 9.64 113.12 9.88 114 10.36C114.907 10.84 115.6 11.5867 116.08 12.6L120.36 10.4C119.507 8.74667 118.293 7.50667 116.72 6.68C115.173 5.82667 113.32 5.4 111.16 5.4C108.653 5.4 106.44 5.94667 104.52 7.04C102.6 8.10667 101.093 9.58667 100 11.48C98.9067 13.3467 98.36 15.48 98.36 17.88C98.36 19.7733 98.7867 21.4267 99.64 22.84C100.493 24.2267 101.707 25.32 103.28 26.12ZM126.076 26.4C127.089 26.9867 128.289 27.28 129.676 27.28C130.556 27.28 131.449 27.1867 132.356 27C133.262 26.8133 134.089 26.48 134.836 26L133.956 22.32C133.556 22.5867 133.102 22.8 132.596 22.96C132.116 23.0933 131.636 23.16 131.156 23.16C130.116 23.16 129.409 22.8533 129.036 22.24C128.662 21.6267 128.556 20.8267 128.716 19.84L130.732 9.8H136.476L137.276 5.8H131.535L132.516 0.92H127.516L126.538 5.8H123.076L122.276 9.8H125.736L123.716 19.88C123.422 21.4 123.489 22.72 123.916 23.84C124.369 24.9333 125.089 25.7867 126.076 26.4ZM0.36 27L0.96 23.84L15.3384 9.64H4.16L4.96 5.64H22.76L22.12 8.8L7.77729 23H19.6L18.8 27H0.36ZM32.7366 27.28C31.0032 27.28 29.4166 26.9067 27.9766 26.16C26.5632 25.4133 25.4299 24.3467 24.5766 22.96C23.7499 21.5467 23.3366 19.8533 23.3366 17.88C23.3366 16.0667 23.6299 14.4 24.2166 12.88C24.8299 11.36 25.6832 10.04 26.7766 8.92C27.8699 7.8 29.1366 6.93333 30.5766 6.32C32.0432 5.70667 33.6432 5.4 35.3766 5.4C37.1632 5.4 38.6966 5.72 39.9766 6.36C41.1031 6.91178 41.9918 7.71134 42.6427 8.75868L43.2566 5.64H48.2566L44.0166 27H39.2566L39.6872 24.811C39.3496 25.1109 38.9927 25.3872 38.6166 25.64C36.9899 26.7333 35.0299 27.28 32.7366 27.28ZM34.0166 23C35.4566 23 36.7232 22.6667 37.8166 22C38.9099 21.3067 39.7766 20.36 40.4166 19.16C41.0566 17.96 41.3766 16.5733 41.3766 15C41.3766 13.3467 40.8832 12.04 39.8966 11.08C38.9099 10.12 37.5232 9.64 35.7366 9.64C34.3232 9.64 33.0566 9.98667 31.9366 10.68C30.8432 11.3467 29.9766 12.28 29.3366 13.48C28.6966 14.68 28.3766 16.0667 28.3766 17.64C28.3766 19.2933 28.8699 20.6 29.8566 21.56C30.8432 22.52 32.2299 23 34.0166 23ZM51.1184 35.04C50.0518 35.04 49.0118 34.8667 47.9984 34.52C46.9584 34.1733 46.1318 33.72 45.5184 33.16L47.9984 29.52C48.4518 29.92 48.9584 30.24 49.5184 30.48C50.1051 30.7467 50.7718 30.88 51.5184 30.88C52.3451 30.88 53.0784 30.6533 53.7184 30.2C54.3851 29.7733 55.0518 29.0267 55.7184 27.96L56.3964 26.907L51.3584 5.64H56.3584L59.9678 21.4868L69.8384 5.64H74.8384L60.1184 28.88C59.1318 30.4267 58.1851 31.6533 57.2784 32.56C56.3718 33.4667 55.4251 34.1067 54.4384 34.48C53.4784 34.8533 52.3718 35.04 51.1184 35.04ZM93 16C93 20.4183 89.4183 24 85 24C80.5817 24 77 20.4183 77 16C77 11.5817 80.5817 8 85 8C89.4183 8 93 11.5817 93 16Z" fill="white"/>
+                </svg>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a th:href="@{/zayct/courses/user}">Профиль</a>
+                </li>
+                <li>
+                    <a th:href="@{/zayct/courses/list/page/1}">Все курсы</a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/zayct/courses/user/admin/studentsList/page/1}">Список студентов</a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/zayct/courses/user/admin/teachersList/page/1}">Список преподавателей</a>
+                </li>
+                <li sec:authorize="not hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/zayct/courses/user/myCourses/page/1}">Ваши курсы</a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_STUDENT')">
+                    <a th:href="@{/zayct/courses/user/myHomework}">Ваши работы</a>
+                </li>
+                <li sec:authorize="hasRole('ROLE_TEACHER')">
+                    <a th:href="@{/zayct/courses/user/teacherHomework/page/1}">Работы на проверку</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="content">
+
+            <nav class="navbar navbar-dark " style="background: #FFAD40; height: 98px;">
+                <h1 style="margin-top: 4px" >Доступные курсы</h1>
+                <a th:href="@{/logout}" class="btn btn-secondary mr-sm-2 d-flex justify-content-center align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    <span style="margin-left: 3px; margin-top: 2px">Выйти</span>
+                </a>
+            </nav>
+            <br>
+            <div class="insideContent">
+
+                <form method="get" th:action="@{/zayct/courses/list/find/byTitle}">
+                    <input type="text" th:name="title" placeholder="Поиск курса по названию...">
+                    <button type="submit" class="btn btn-secondary">Найти по названию</button>
+                </form>
+                <br>
+                <form method="get" th:action="@{/zayct/courses/list/find/byTeacherName}" >
+                    <input type="text" th:name="teacherName" placeholder="Поиск курса по имени преподавателя...">
+                    <button type="submit" class="btn btn-secondary">Найти по имени преподавателя</button>
+                </form>
+                <br>
+                <div class="row row-cols-3 g-3">
+                    <div class="col" th:each="course : ${courseList}">
+                       <div class="card custom-card" style="width: 20rem; height: 32rem;">
+                            <img class="card-img-top" th:src="${course.icon}" alt="Card image cap" height="286px" style="padding: 15px">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold" th:text="${course.name}"></h5>
+                                <p class="card-text" style="color: white">Преподаватель: <span th:text="${course.teacherName}"></span></p>
+                                <a th:href="@{|/zayct/courses/list/info/${course.id}|}" class="btn btn-secondary"> Подробнее </a>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+
+                <div th:if="${totalPages > 1}">
+                    <div class="row col-sm-10">
+                        <div class="col-sm-2">
+                            Всего курсов: [[${totalItems}]]
+                        </div>
+                        <div class="col-sm-1">
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                      <a th:if="${currentPage != i}" th:href="@{'/zayct/courses/list/page/' + ${i}}">[[${i}]]</a>
+                      <span th:unless="${currentPage != i}">[[${i}]]</span>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <a th:if="${isAdmin}" th:href="@{/zayct/courses/list/addCourse}" th:method="GET" class="btn btn-secondary">Добавить новый курс</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

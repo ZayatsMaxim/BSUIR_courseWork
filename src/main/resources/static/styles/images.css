@@ -1,0 +1,25 @@
+.avatar{
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 0 0 3px #5B5B5B;
+}
+
+.logo{
+    margin-top: 10px;
+}
+
+.custom-card{
+    background: #FFAD40;
+    border-radius: 5%;
+    box-shadow: 4px 4px 10px #5B5B5B;
+}
+
+.card-avatar{
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    padding: 8px;
+}

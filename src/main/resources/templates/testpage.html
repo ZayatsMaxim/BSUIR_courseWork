@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Курсы zayct</title>
+</head>
+<body>
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to authenticated users.
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        This content is only shown to administrators.
+    </div>
+    <div sec:authorize="hasRole('ROLE_STUDENT')">
+        This content is only shown to students.
+    </div>
+    <div sec:authorize="hasRole('ROLE_TEACHER')">
+        This content is only shown to users.
+    </div>
+</body>
+</html>
