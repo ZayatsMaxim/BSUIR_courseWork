@@ -2,6 +2,8 @@ package com.example.courseworkbyzayats.repositories;
 
 import com.example.courseworkbyzayats.models.Group;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -53,5 +55,19 @@ public interface GroupRepository extends JpaRepository<Group,Integer> {
     )
     int howManyTimesStudentIsRegisteredForCourse(@Param("courseId") Integer courseId,
                                                  @Param("studentId") Integer studentId);
+
+    @Query(
+            value = "SELECT * FROM `group`",
+            countQuery = "SELECT count(*) FROM `group`",
+            nativeQuery = true)
+    Page<Group> getAllGroupsPage(Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "INSERT INTO `group`(`name`, course_id) VALUE (:#{#group.name}, :#{#group.courseId})",
+            nativeQuery = true
+    )
+    void createGroup(@Param("group") Group group);
 
 }

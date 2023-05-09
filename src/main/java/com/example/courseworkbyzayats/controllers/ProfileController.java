@@ -5,10 +5,7 @@ import com.example.courseworkbyzayats.exceptions.AlreadyInUseException;
 import com.example.courseworkbyzayats.models.*;
 import com.example.courseworkbyzayats.models.dto.HomeworkForRatingDTO;
 import com.example.courseworkbyzayats.models.dto.UserUpdateDTO;
-import com.example.courseworkbyzayats.services.ContentService;
-import com.example.courseworkbyzayats.services.CourseService;
-import com.example.courseworkbyzayats.services.JpaUserDetailsService;
-import com.example.courseworkbyzayats.services.RegistrationService;
+import com.example.courseworkbyzayats.services.*;
 import com.ibm.icu.text.Transliterator;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -42,17 +38,20 @@ public class ProfileController {
     private final CourseService courseService;
     private final ContentService contentService;
     private final RegistrationService registrationService;
+    private final GroupService groupService;
 
     private final static int DEFAULT_PAGE_NUMBER = 1;
 
     public ProfileController(JpaUserDetailsService userDetailsService,
                              CourseService courseService,
                              ContentService contentService,
-                             RegistrationService registrationService) {
+                             RegistrationService registrationService,
+                             GroupService groupService) {
         this.userDetailsService = userDetailsService;
         this.courseService = courseService;
         this.contentService = contentService;
         this.registrationService = registrationService;
+        this.groupService = groupService;
     }
 
     @GetMapping("")
@@ -262,9 +261,49 @@ public class ProfileController {
 
             model.addAttribute("usersList", foundUsers);
             model.addAttribute("role", role);
+
             return "adminFindUsers";
         }
         return "redirect:/zayct/courses/user";
+    }
+
+    @GetMapping("/admin/groupsList/page/{pageNumber}")
+    public String getGroupsList(@PathVariable Integer pageNumber, Model model){
+        UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
+        if (currentUserDetails.getAuthorities().contains(ADMIN)) {
+            Page<Group> groupsPage = groupService.getAllGroupsPage(pageNumber);
+            List<Group> groupsList = groupsPage.getContent();
+
+            model.addAttribute("currentPage", pageNumber);
+            model.addAttribute("totalPages", groupsPage.getTotalPages());
+            model.addAttribute("totalItems", groupsPage.getTotalElements());
+            model.addAttribute("groupsList", groupsList);
+            model.addAttribute("courseService", courseService);
+
+            return "adminGroupsList";
+        }
+        else return "redirect:/zayct/courses/user";
+    }
+
+    @GetMapping("/admin/createGroup")
+    public String showCreateGroupPage(Model model){
+        UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
+        if (currentUserDetails.getAuthorities().contains(ADMIN)) {
+            Group newGroup = new Group();
+            model.addAttribute("newGroup", newGroup);
+            return "adminGroupCreation";
+        }
+        else return "redirect:/zayct/courses/user";
+    }
+
+    @PostMapping ("/admin/createGroup")
+    public String createNewGroup(@ModelAttribute("newGroup") Group newGroup){
+        UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
+        if (currentUserDetails.getAuthorities().contains(ADMIN)) {
+            groupService.saveGroup(newGroup);
+            return "redirect:/zayct/courses/user/admin/groupsList/page/1";
+        }
+        else return "redirect:/zayct/courses/user";
     }
 
     @GetMapping("/teacherHomework/download/{homeworkId}")

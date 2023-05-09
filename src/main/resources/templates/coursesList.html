@@ -36,6 +36,9 @@
                 <li sec:authorize="not hasRole('ROLE_ADMIN')">
                     <a th:href="@{/zayct/courses/user/myCourses/page/1}">Ваши курсы</a>
                 </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/zayct/courses/user/admin/groupsList/page/1}">Список групп</a>
+                </li>
                 <li sec:authorize="hasRole('ROLE_STUDENT')">
                     <a th:href="@{/zayct/courses/user/myHomework}">Ваши работы</a>
                 </li>
