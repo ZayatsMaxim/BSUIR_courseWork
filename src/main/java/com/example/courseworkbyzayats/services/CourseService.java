@@ -52,4 +52,8 @@ public class CourseService {
     public void addCourse(CourseSaveDTO course, Integer teacherId){
         courseRepository.saveCourse(course, teacherId);
     }
+
+    public String getCourseName(Integer courseId){
+        return courseRepository.getCourseNameById(courseId);
+    }
 }

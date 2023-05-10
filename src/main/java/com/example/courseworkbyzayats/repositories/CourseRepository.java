@@ -85,4 +85,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             nativeQuery = true
     )
     void saveCourse(@Param("course") CourseSaveDTO course, @Param("teacherId") Integer teacherId);
+
+    @Query(
+            value = "SELECT `name` FROM course WHERE id = :courseId" ,
+            nativeQuery = true
+    )
+    String getCourseNameById(@Param("courseId") Integer courseId);
 }

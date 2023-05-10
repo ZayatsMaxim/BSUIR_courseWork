@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/zayct/courses/user")
@@ -302,6 +303,26 @@ public class ProfileController {
         if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             groupService.saveGroup(newGroup);
             return "redirect:/zayct/courses/user/admin/groupsList/page/1";
+        }
+        else return "redirect:/zayct/courses/user";
+    }
+
+    @GetMapping("/admin/groupInfo/{groupId}")
+    public String getGroupInfo(@PathVariable Integer groupId, Model model){
+        UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
+        if (currentUserDetails.getAuthorities().contains(ADMIN)) {
+            Group requestedGroup = groupService.getGroupById(groupId);
+            if (requestedGroup == null){
+                return "redirect:/zayct/courses/user";
+            }
+            List<User> groupStudents = userDetailsService.getGroupStudentsList(groupId);
+            String courseName = courseService.getCourseName(requestedGroup.getCourseId());
+
+            model.addAttribute("groupStudents", groupStudents);
+            model.addAttribute("group", requestedGroup);
+            model.addAttribute("courseName", courseName);
+            return "adminGroupInfo";
+
         }
         else return "redirect:/zayct/courses/user";
     }

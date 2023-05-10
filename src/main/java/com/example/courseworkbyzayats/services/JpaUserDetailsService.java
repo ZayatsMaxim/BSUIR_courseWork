@@ -129,4 +129,8 @@ public class JpaUserDetailsService implements UserDetailsService {
         userRepository.updateUserAvatar(userId,AVATAR_REPO_URL+avatar.getOriginalFilename());
     }
 
+    public List<User> getGroupStudentsList(Integer groupId){
+        return userRepository.findGroupStudents(groupId);
+    }
+
 }

@@ -64,11 +64,12 @@
         <div class="insideContent" sec:hasRole="hasRole('ROLE_ADMIN')">
             <div class="row row-cols-3 g-3 col-9">
                 <div class="col" th:each="group : ${groupsList}">
-                    <div class="card custom-card" style="width: 18rem; height: 11rem;">
+                    <div class="card custom-card" style="width: 18rem; height: 15rem;">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${group.name}"></h5>
                             <p class="card-text">Курс: <span th:with="courseId=${group.courseId}" th:text="${courseService.getCourseById(courseId).name}"></span></p>
                             <p class="card-text">ID: <span th:text="${group.id}"></span></p>
+                            <a class="btn btn-secondary" th:href="@{|/zayct/courses/user/admin/groupInfo/${group.id}|}">О группе</a>
                         </div>
                     </div>
                     <br>

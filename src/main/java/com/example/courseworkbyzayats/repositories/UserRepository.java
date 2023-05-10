@@ -94,4 +94,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true
     )
     void updateUserAvatar(@Param("userId") Integer userId,@Param("avatar") String avatar);
+
+    @Query(
+            value = "SELECT `user`.* FROM studentsgroups \n" +
+                    "JOIN `user` ON student_id = `user`.id\n" +
+                    "WHERE group_id = :groupId",
+            nativeQuery = true
+    )
+    List<User> findGroupStudents(@Param("groupId") Integer groupId);
 }
