@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/zayct/courses/user/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
                         .anyRequest().authenticated()
                 )
-                .formLogin().permitAll()
+                .formLogin().permitAll().defaultSuccessUrl("/zayct/courses/user", true)
                 .and()
                 .logout().permitAll()
                 .and()

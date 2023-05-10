@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -167,6 +168,9 @@ public class ProfileController {
 
     @PostMapping("/updateAvatar")
     public String updateUserAvatar(@RequestParam("avatar") MultipartFile avatar) throws IOException {
+        if (avatar.isEmpty()){
+            return "redirect:/zayct/courses/user";
+        }
         Integer userId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
         userDetailsService.updateAvatar(userId,avatar);
         return "redirect:/zayct/courses/user";

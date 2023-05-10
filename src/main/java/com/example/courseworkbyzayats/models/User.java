@@ -22,13 +22,13 @@ public class User {
 
     @NotBlank(message = "Заполните логин")
     @Size(min=4, max=30)
-    @Pattern(regexp = "^[a-zA-Z][A-Za-z0-9_]{4,30}$",
+    @Pattern(regexp = "^[a-zA-Z][A-Za-z0-9_%@]{4,30}$",
             message = "Неправильный формат логина")
     private String username;
 
     @NotBlank(message = "Заполните пароль")
     @Size(min=8, max=32)
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,32}$",
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@%_]{8,32}$",
             message = "Неправильный формат пароля")
     private String password;
 
@@ -44,7 +44,7 @@ public class User {
             message = "Неправильный формат почты")
     private String email;
 
-    @Pattern(regexp = "(?:^\\+375\\d{9})?$",
+    @Pattern(regexp = "(^\\+375\\d{9})$",
             message = "Неправильный формат номера телефона")
     private String phoneNumber;
 

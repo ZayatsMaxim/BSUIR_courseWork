@@ -13,22 +13,27 @@
             <div class="form-row">
                 <div class="col">
                     <label for="loginInput">Ваш логин</label>
+                    <small style="margin-left: 5px">От 4 до 30 символов, начинающихся с латинской буквы</small>
                     <input id="loginInput" type="text" class="form-control col-5" th:field="*{username}" placeholder="Логин...">
                     <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}"></p>
 
                     <label for="passwordInput">Ваш пароль</label>
+                    <small style="margin-left: 5px">От 8 до 32 символов (латинские буквы, цифры, специальные знаки)</small>
                     <input id="passwordInput" type="text" class="form-control col-5" th:field="*{password}" placeholder="Пароль...">
                     <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
 
                     <label for="nameInput">Ваше имя</label>
+                    <small style="margin-left: 5px">Введите имя(от 4 символов) и фамилию (вплоть до 6 слов и 32 символов), разделенных пробелом</small>
                     <input id="nameInput" type="text" class="form-control col-5" th:field="*{name}" placeholder="Имя...">
                     <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
 
                     <label for="emailInput">Ваша электронная почта</label>
+                    <small style="margin-left: 5px">Введите адрес почты в формате xxx@xxx.xxx (до 50 символов)</small>
                     <input id="emailInput" type="text" class="form-control col-5" th:field="*{email}" placeholder="Адрес почты...">
                     <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></p>
 
                     <label for="phoneInput">Ваш номер телефона</label>
+                    <small style="margin-left: 5px">Введите номер телефона в формате +37525....... (до 13 символов)</small>
                     <input id="phoneInput" type="text" class="form-control col-5" th:field="*{phoneNumber}" placeholder="Номер телефона...">
                     <p th:if="${#fields.hasErrors('phoneNumber')}" th:errorclass="error" th:errors="*{phoneNumber}"></p>
 

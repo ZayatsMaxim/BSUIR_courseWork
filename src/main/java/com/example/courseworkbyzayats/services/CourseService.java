@@ -14,7 +14,7 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final static int PAGE_SIZE = 8;
+    private final static int PAGE_SIZE = 4;
 
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;

@@ -38,5 +38,4 @@ public class RegistrationService {
         userRepository.saveUser(newUser);
         log.info("Created newUser: {}", newUser.getUsername());
     }
-
 }

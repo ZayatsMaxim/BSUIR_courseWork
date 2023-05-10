@@ -8,6 +8,8 @@ import com.example.courseworkbyzayats.models.dto.UserUpdateDTO;
 import com.example.courseworkbyzayats.repositories.FileRepository;
 import com.example.courseworkbyzayats.repositories.UserRepository;
 import com.example.courseworkbyzayats.services.validators.AlreadyInUseValidator;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -23,9 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
+@Slf4j
 public class JpaUserDetailsService implements UserDetailsService {
 
     private static final int PAGE_SIZE = 8;
@@ -125,8 +129,13 @@ public class JpaUserDetailsService implements UserDetailsService {
     }
 
     public void updateAvatar(Integer userId, MultipartFile avatar) throws IOException {
-        fileRepository.save(avatar, AVATAR_REPO_PATH+avatar.getOriginalFilename());
-        userRepository.updateUserAvatar(userId,AVATAR_REPO_URL+avatar.getOriginalFilename());
+        if(Objects.equals(FilenameUtils.getExtension(avatar.getOriginalFilename()), "jpg")
+            || Objects.equals(FilenameUtils.getExtension(avatar.getOriginalFilename()), "png")) {
+            fileRepository.save(avatar, AVATAR_REPO_PATH+avatar.getOriginalFilename());
+            userRepository.updateUserAvatar(userId,AVATAR_REPO_URL+avatar.getOriginalFilename());
+        }
+        else log.warn("Попытка загрузить аватар с неправильным форматом: " + avatar.getOriginalFilename()
+                + " пользователем: " + getCurrentLoggedUserDetails().getUser().getId());
     }
 
     public List<User> getGroupStudentsList(Integer groupId){

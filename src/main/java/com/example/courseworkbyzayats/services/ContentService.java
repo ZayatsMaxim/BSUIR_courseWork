@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class ContentService {
-    public static final Integer MIN_RATING_TO_PASS = 6;
+    public static final Integer MIN_RATING_TO_PASS = 4;
     private static final int PAGE_SIZE = 5;
     private static final String STUDENT_HOMEWORK_REPO_PATH = "D:\\JavaProjects\\courseWorkByZayats\\src\\main\\resources\\homework\\";
     private static final String STUDENT_TEST_REPO_PATH = "D:\\JavaProjects\\courseWorkByZayats\\src\\main\\resources\\homework\\test\\";
