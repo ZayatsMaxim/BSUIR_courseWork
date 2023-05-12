@@ -1,5 +1,6 @@
 package com.example.courseworkbyzayats.services;
 
+import com.example.courseworkbyzayats.exceptions.FileUploadException;
 import com.example.courseworkbyzayats.models.ContentInfo;
 import com.example.courseworkbyzayats.models.HomeworkInfo;
 import com.example.courseworkbyzayats.models.dto.HomeworkForRatingDTO;
@@ -7,6 +8,7 @@ import com.example.courseworkbyzayats.repositories.ContentInfoRepository;
 import com.example.courseworkbyzayats.repositories.FileRepository;
 import com.example.courseworkbyzayats.repositories.HomeworkForRatingRepository;
 import com.example.courseworkbyzayats.repositories.HomeworkInfoRepository;
+import com.example.courseworkbyzayats.services.validators.FileValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -34,16 +35,19 @@ public class ContentService {
     private final ContentInfoRepository contentInfoRepository;
     private final HomeworkInfoRepository homeworkInfoRepository;
     private final FileRepository fileRepository;
+    private final FileValidator fileValidator;
     private final HomeworkForRatingRepository homeworkForRatingRepository;
 
 
     public ContentService(ContentInfoRepository contentInfoRepository,
                           HomeworkInfoRepository homeworkInfoRepository,
                           FileRepository fileRepository,
+                          FileValidator fileValidator,
                           HomeworkForRatingRepository homeworkForRatingRepository) {
         this.contentInfoRepository = contentInfoRepository;
         this.homeworkInfoRepository = homeworkInfoRepository;
         this.fileRepository = fileRepository;
+        this.fileValidator = fileValidator;
         this.homeworkForRatingRepository = homeworkForRatingRepository;
     }
 
@@ -89,7 +93,7 @@ public class ContentService {
     public void saveHomework(MultipartFile file,
                              Integer studentId,
                              Integer courseContentId,
-                             String type) throws IOException {
+                             String type) throws IOException, FileUploadException {
         String filePath = STUDENT_HOMEWORK_REPO_PATH +
                 file.getOriginalFilename();
 
@@ -98,6 +102,7 @@ public class ContentService {
                     file.getOriginalFilename();
         }
 
+        fileValidator.validateFile(file,"HOMEWORK");
         fileRepository.save(file, filePath);
         contentInfoRepository.saveHomework(filePath,type,studentId,courseContentId);
         log.info("Saved homework: " + file.getOriginalFilename() + " from student: " + studentId + " type:" + type);
@@ -108,7 +113,7 @@ public class ContentService {
                             Integer courseId,
                             String contentType,
                             String contentName,
-                            String description) throws IOException {
+                            String description) throws IOException, FileUploadException {
         String filePath = TEACHER_HOMEWORK_REPO_PATH +
                 file.getOriginalFilename();
 
@@ -121,7 +126,7 @@ public class ContentService {
             filePath = TEACHER_THEORY_REPO_PATH +
                     file.getOriginalFilename();
         }
-        System.out.println(courseId);
+        fileValidator.validateFile(file, "CONTENT");
         fileRepository.save(file,filePath);
         contentInfoRepository.saveTeacherContent(courseId,filePath,contentType,contentName,description);
         log.info("Saved content: " + file.getOriginalFilename() + " from teacher: " + userId + " type:" +contentType);
@@ -144,7 +149,7 @@ public class ContentService {
         homeworkForRatingRepository.saveHomeworkRating(homeworkId, rate);
     }
 
-    public String saveCourseIcon(MultipartFile file) throws IOException {
+    public String saveCourseIcon(MultipartFile file) throws IOException, FileUploadException {
         fileRepository.save(file, COURSE_ICON_REPO_PATH + file.getOriginalFilename());
         return file.getOriginalFilename();
     }

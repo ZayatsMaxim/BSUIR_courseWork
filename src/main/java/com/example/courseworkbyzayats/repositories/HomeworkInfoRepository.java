@@ -20,7 +20,4 @@ public interface HomeworkInfoRepository extends JpaRepository<HomeworkInfo, Inte
             nativeQuery = true
     )
     List<HomeworkInfo> getStudentHomeworkInfo(@Param("studentId") Integer studentId);
-
-
-
 }

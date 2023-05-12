@@ -2,14 +2,15 @@ package com.example.courseworkbyzayats.services;
 
 
 import com.example.courseworkbyzayats.exceptions.AlreadyInUseException;
+import com.example.courseworkbyzayats.exceptions.FileUploadException;
 import com.example.courseworkbyzayats.models.User;
 import com.example.courseworkbyzayats.models.UserSecurityDetails;
 import com.example.courseworkbyzayats.models.dto.UserUpdateDTO;
 import com.example.courseworkbyzayats.repositories.FileRepository;
 import com.example.courseworkbyzayats.repositories.UserRepository;
 import com.example.courseworkbyzayats.services.validators.AlreadyInUseValidator;
+import com.example.courseworkbyzayats.services.validators.FileValidator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 
 @Service
@@ -35,6 +35,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     private static final int PAGE_SIZE = 8;
     private final UserRepository userRepository;
     private final AlreadyInUseValidator alreadyInUseValidator;
+    private final FileValidator fileValidator;
     private final FileRepository fileRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -44,10 +45,12 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Autowired
     public JpaUserDetailsService(UserRepository userRepository,
                                  AlreadyInUseValidator alreadyInUseValidator,
+                                 FileValidator fileValidator,
                                  FileRepository fileRepository,
                                  @Lazy BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.alreadyInUseValidator = alreadyInUseValidator;
+        this.fileValidator = fileValidator;
         this.fileRepository = fileRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -128,14 +131,15 @@ public class JpaUserDetailsService implements UserDetailsService {
         userRepository.updateUser(updateInfo);
     }
 
-    public void updateAvatar(Integer userId, MultipartFile avatar) throws IOException {
-        if(Objects.equals(FilenameUtils.getExtension(avatar.getOriginalFilename()), "jpg")
-            || Objects.equals(FilenameUtils.getExtension(avatar.getOriginalFilename()), "png")) {
+    public void updateAvatar(Integer userId, MultipartFile avatar) throws IOException, FileUploadException {
+
+        try {
+            fileValidator.validateFile(avatar, "AVATAR");
             fileRepository.save(avatar, AVATAR_REPO_PATH+avatar.getOriginalFilename());
             userRepository.updateUserAvatar(userId,AVATAR_REPO_URL+avatar.getOriginalFilename());
+        } catch (IOException | FileUploadException e){
+            throw e;
         }
-        else log.warn("Попытка загрузить аватар с неправильным форматом: " + avatar.getOriginalFilename()
-                + " пользователем: " + getCurrentLoggedUserDetails().getUser().getId());
     }
 
     public List<User> getGroupStudentsList(Integer groupId){

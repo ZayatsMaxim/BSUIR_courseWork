@@ -1,6 +1,7 @@
 package com.example.courseworkbyzayats.controllers;
 
 import com.example.courseworkbyzayats.exceptions.AlreadyRegisteredException;
+import com.example.courseworkbyzayats.exceptions.FileUploadException;
 import com.example.courseworkbyzayats.models.ContentInfo;
 import com.example.courseworkbyzayats.models.Course;
 import com.example.courseworkbyzayats.models.dto.CourseSaveDTO;
@@ -168,7 +169,7 @@ public class CoursesListController {
         Integer currentUserId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
         try {
             contentService.saveHomework(file,currentUserId,courseContentId,type);
-        } catch (IOException e){
+        } catch (IOException | FileUploadException e){
             model.addAttribute("errorMessage",e.getMessage());
             return "uploadFailed";
         }
@@ -185,7 +186,7 @@ public class CoursesListController {
         Integer currentUserId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
         try {
             contentService.saveContent(file,currentUserId,courseId,contentType,contentName,description);
-        } catch (IOException e){
+        } catch (IOException | FileUploadException e){
             model.addAttribute("errorMessage",e.getMessage());
             return "uploadFailed";
         }
@@ -206,10 +207,16 @@ public class CoursesListController {
     @PostMapping("/addCourse")
     public String addCourse(@RequestParam(value = "iconFile", required = false) MultipartFile file,
                             @ModelAttribute("newCourse") CourseSaveDTO newCourse,
-                            @RequestParam("teacherId") Integer teacherId) throws IOException {
-        if (!file.isEmpty()){
-           String savedIconName = contentService.saveCourseIcon(file);
+                            @RequestParam("teacherId") Integer teacherId,
+                            Model model) throws IOException, FileUploadException {
+
+        try{
+            String savedIconName = contentService.saveCourseIcon(file);
             newCourse.setIcon(ICONS_REPO_URL + savedIconName);
+        }
+        catch (IOException | FileUploadException e){
+            model.addAttribute("errorMessage",e.getMessage());
+            return "uploadFailed";
         }
 
         courseService.addCourse(newCourse, teacherId);

@@ -2,6 +2,7 @@ package com.example.courseworkbyzayats.controllers;
 
 
 import com.example.courseworkbyzayats.exceptions.AlreadyInUseException;
+import com.example.courseworkbyzayats.exceptions.FileUploadException;
 import com.example.courseworkbyzayats.models.*;
 import com.example.courseworkbyzayats.models.dto.HomeworkForRatingDTO;
 import com.example.courseworkbyzayats.models.dto.UserUpdateDTO;
@@ -23,9 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/zayct/courses/user")
@@ -167,12 +166,16 @@ public class ProfileController {
     }
 
     @PostMapping("/updateAvatar")
-    public String updateUserAvatar(@RequestParam("avatar") MultipartFile avatar) throws IOException {
-        if (avatar.isEmpty()){
-            return "redirect:/zayct/courses/user";
+    public String updateUserAvatar(@RequestParam("avatar") MultipartFile avatar,
+                                   Model model) throws IOException, FileUploadException {
+        try{
+            Integer userId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
+            userDetailsService.updateAvatar(userId,avatar);
+        } catch (IOException | FileUploadException e){
+            model.addAttribute("errorMessage", e);
+            return "uploadFailed";
         }
-        Integer userId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
-        userDetailsService.updateAvatar(userId,avatar);
+
         return "redirect:/zayct/courses/user";
     }
 

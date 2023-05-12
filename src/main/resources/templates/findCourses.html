@@ -65,11 +65,11 @@
         <div class="row row-cols-3 g-3">
           <div class="col" th:each="course : ${courseList}">
             <div class="card custom-card" style="width: 20rem; height: 32rem;">
-              <img class="card-img-top" th:src="${course.icon}" alt="Card image cap" height="286px">
+              <img class="card-img-top" th:src="${course.icon}" alt="Card image cap" height="286px" style="padding: 15px">
               <div class="card-body">
                 <h5 class="card-title" th:text="${course.name}"></h5>
                 <p class="card-text">Преподаватель: <span th:text="${course.teacherName}"></span></p>
-                <a th:href="@{|/zayct/courses/list/info/${course.id}|}" class="btn btn-primary"> Подробнее </a>
+                <a th:href="@{|/zayct/courses/list/info/${course.id}|}" class="btn btn-secondary"> Подробнее </a>
               </div>
             </div>
             <br>

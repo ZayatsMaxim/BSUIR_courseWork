@@ -44,33 +44,7 @@
                     <button type="submit" class="btn btn-secondary col-2">Зарегестрироваться</button>
                 </div>
             </div>
-
         </form>
     </div>
-
-   <!-- <div class="container my-2" sec:hasRole="hasRole('ROLE_ADMIN')">
-        <h1 sec:hasRole="hasRole('ROLE_ADMIN')">Добавить нового преподавателя:</h1>
-        <form sec:hasRole="hasRole('ROLE_ADMIN')" th:action="@{/zayct/courses/user/admin/teacherRegister}" method="post" th:object="${newUser}">
-            <input type="text" th:field="*{username}" placeholder="Логин преподавателя...">
-            <p th:if="${#fields.hasErrors('username')}" th:errorclass="error" th:errors="*{username}"></p>
-            <br>
-            <input type="text" th:field="*{password}" placeholder="Пароль преподавателя...">
-            <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
-            <br>
-            <input type="text" th:field="*{name}" placeholder="Имя преподавателя">
-            <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
-            <br>
-            <input type="text" th:field="*{email}" placeholder="Электронная почта преподавателя...">
-            <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></p>
-            <br>
-            <input type="text" th:field="*{phoneNumber}" placeholder="Номер телефона преподавателя...">
-            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errorclass="error" th:errors="*{phoneNumber}"></p>
-            <br>
-            <div th:if="${#fields.hasErrors('global')}">
-                <p th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
-            </div>
-            <button type="submit" class="btn btn-info col-2">Зарегестрировать</button>
-        </form>
-    </div>-->
 </body>
 </html>
