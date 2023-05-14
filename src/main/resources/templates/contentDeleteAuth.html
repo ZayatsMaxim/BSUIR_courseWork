@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Курсы zayct</title>
@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/styles/images.css">
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script th:src="@{/scripts/deleteContentAuth.js}"></script>
 </head>
 <body>
 
@@ -49,65 +50,35 @@
     </nav>
 
     <div class="content">
-      <nav class="navbar navbar-dark " style="background: #FFAD40; height: 98px;">
-        <h1 style="margin-top: 4px">Список преподавателей</h1>
-        <a th:href="@{/logout}" class="btn btn-secondary mr-sm-2 d-flex justify-content-center align-items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
-            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
-          </svg>
-          <span style="margin-left: 3px; margin-top: 2px">Выйти</span>
-        </a>
-      </nav>
-      <br>
-      <div class="insideContent" sec:hasRole="hasRole('ROLE_ADMIN')">
-        <form method="get" th:action="@{/zayct/courses/user/admin/findUser/byUsername}">
-          <input type="hidden" th:name="role" th:value="ROLE_TEACHER">
-          <input type="text" th:name="username" placeholder="Поиск преподавателя по логину...">
-          <button type="submit" class="btn btn-secondary">Поиск</button>
-        </form>
+      <div class="content">
+        <nav class="navbar navbar-dark " style="background: #FFAD40; height: 98px;">
+          <h1 style="margin-top: 4px" >Подтверждение удаления</h1>
+          <a th:href="@{/logout}" class="btn btn-secondary mr-sm-2 d-flex justify-content-center align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+              <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg>
+            <span style="margin-left: 3px; margin-top: 2px">Выйти</span>
+          </a>
+        </nav>
         <br>
-        <form method="get" th:action="@{/zayct/courses/user/admin/findUser/byName}">
-          <input type="hidden" th:name="role" th:value="ROLE_TEACHER">
-          <input type="text" th:name="name" placeholder="Поиск преподавателя по имени...">
-          <button type="submit" class="btn btn-secondary">Поиск</button>
-        </form>
-        <br>
-        <div class="row row-cols-3 g-3">
-          <div class="col" th:each="teacher : ${teachersList}">
-            <div class="card custom-card" style="width: 20rem; height: 32rem;">
-              <img class="card-img-top card-avatar" th:src="${teacher.avatar}" alt="Card image cap" height="286px">
-              <div class="card-body">
-                <h5 class="card-title" th:text="${teacher.username}"></h5>
-                <p class="card-text">Имя: <span th:text="${teacher.name}"></span></p>
-                <p class="card-text">Почта: <span th:text="${teacher.email}"></span></p>
-                <p class="card-text" th:if="!${#strings.isEmpty(teacher.phoneNumber)}">Телефон: <span th:text="${teacher.phoneNumber}"></span></p>
+
+        <div class="insideContent">
+          <form method="post"
+                id="confirmForm"
+                onsubmit="return sendFormData('confirmForm', 'contentId', event)"
+                th:contentId="${contentId}">
+            <h3> Для подтверждения действия введите пароль: </h3>
+            <div class="form-row">
+              <div class="col">
+                <input required type="password" class="form-control col-5" th:name="password">
+                <button style="margin-top: 6px" type="submit" class="btn btn-secondary col-2">Продолжить</button>
               </div>
             </div>
-            <br>
-          </div>
+          </form>
         </div>
-        <br>
-        <div th:if="${totalPages > 1}">
-          <div class="row col-sm-10">
-            <div class="col-sm-2">
-              Всего преподавателей: [[${totalItems}]]
-            </div>
-            <div class="col-sm-1">
-                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                  <a th:if="${currentPage != i}" th:href="@{'/zayct/courses/user/admin/teachersList/page/' + ${i}}">[[${i}]]</a>
-                  <span th:unless="${currentPage != i}">[[${i}]]</span>
-                </span>
-            </div>
-          </div>
-        </div>
-        <hr>
-        <a sec:hasRole="hasRole('ROLE_ADMIN')" th:href="@{/zayct/courses/user/admin/teacherRegister}" th:method="GET" class="btn btn-secondary">Добавить преподавателя</a>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/zayct/stats/usersJSON}" class="btn btn-secondary col-4" th:method="GET">Экспорт списка всех пользователей в JSON</a>
-      </div>
     </div>
   </div>
-
-
+  </div>
 </body>
 </html>

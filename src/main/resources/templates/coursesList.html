@@ -101,7 +101,10 @@
                     </div>
                 </div>
                 <hr>
+                <div class=""></div>
                 <a th:if="${isAdmin}" th:href="@{/zayct/courses/list/addCourse}" th:method="GET" class="btn btn-secondary">Добавить новый курс</a>
+                <a th:if="${isAdmin}" th:href="@{/zayct/stats/coursesJSON}" th:method="GET" class="btn btn-secondary">Экспорт списка в JSON</a>
+                <a th:if="${isAdmin}" th:href="@{/zayct/stats/coursesComparison}" th:method="GET" class="btn btn-secondary">Аналитика</a>
             </div>
         </div>
     </div>

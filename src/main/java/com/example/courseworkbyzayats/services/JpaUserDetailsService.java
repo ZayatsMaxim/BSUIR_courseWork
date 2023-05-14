@@ -66,6 +66,31 @@ public class JpaUserDetailsService implements UserDetailsService {
         return new UserSecurityDetails(user);
     }
 
+    public boolean identifyUserByCredentials(Integer userId, String password) {
+        User user = userRepository.getUserById(userId);
+        return (passwordEncoder.matches(password, user.getPassword()));
+    }
+
+    public boolean identifyTeacherForCourse(Integer teacherId, Integer courseId){
+        return (teacherId.equals(userRepository.getCourseTeacherId(courseId)));
+    }
+
+    public boolean identityUserForContentPreview(Integer userId, Integer courseId){
+        User user = userRepository.getUserById(userId);
+        switch (user.getRole()) {
+            case "ROLE_STUDENT" -> {
+               return userRepository.getCourseIdIfUserIsItsStudent(userId, courseId).isPresent();
+            }
+            case "ROLE_TEACHER" -> {
+                return (identifyTeacherForCourse(userId, courseId));
+            }
+            case "ROLE_ADMIN" -> {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public UserSecurityDetails getCurrentLoggedUserDetails(){
         return (UserSecurityDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

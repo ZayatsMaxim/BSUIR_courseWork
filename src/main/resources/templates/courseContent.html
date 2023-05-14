@@ -70,11 +70,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each = "courseInfo : ${courseTheory}">
-                        <td th:text="${courseInfo.fileName}"></td>
-                        <td th:text="${courseInfo.description}"></td>
+                    <tr th:each = "contentInfo : ${courseTheory}">
+                        <td th:text="${contentInfo.fileName}"></td>
+                        <td th:text="${contentInfo.description}"></td>
                         <td>
-                            <a th:href="@{|/zayct/courses/list/content/download/${courseInfo.id}|}" class="btn btn-secondary"> Скачать </a>
+                            <a th:href="@{|/zayct/courses/list/content/download/${contentInfo.id}|}" class="btn btn-secondary"> Скачать </a>
+                            <a sec:authorize="hasRole('ROLE_TEACHER')"
+                               class="btn btn-secondary" th:href="@{|/zayct/courses/user/teacher/deleteContent/${contentInfo.id}|}">Удалить</a>
                         </td>
                     </tr>
                     </tbody>
@@ -105,18 +107,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each = "courseInfo : ${courseHomework}">
-                        <td th:text="${courseInfo.fileName}"></td>
-                        <td th:text="${courseInfo.description}"></td>
+                    <tr th:each = "contentInfo : ${courseHomework}">
+                        <td th:text="${contentInfo.fileName}"></td>
+                        <td th:text="${contentInfo.description}"></td>
                         <td>
-                            <a th:href="@{|/zayct/courses/list/content/download/${courseInfo.id}|}" class="btn btn-secondary" style="margin-bottom: 5px"> Скачать </a>
+                            <a th:href="@{|/zayct/courses/list/content/download/${contentInfo.id}|}" class="btn btn-secondary" style="margin-bottom: 5px"> Скачать </a>
                             <form sec:authorize="hasRole('ROLE_STUDENT')" th:action="@{|/zayct/courses/list/content/upload/homework|}" method="post" enctype="multipart/form-data">
-                                <input type="hidden" th:value="${courseInfo.id}" th:name="courseContentId">
+                                <input type="hidden" th:value="${contentInfo.id}" th:name="courseContentId">
                                 <input type="hidden" th:value="HOMEWORK" th:name="type">
                                 <input type="button" id="studentSendHomework" value="Выбрать файл" onclick="document.getElementById('sendHomework').click();"/>
                                 <input th:name="file" type="file" style="display:none;" id="sendHomework"/>
                                 <button type="submit" class="btn btn-secondary">Отправить решение</button>
                             </form>
+
+                            <a sec:authorize="hasRole('ROLE_TEACHER')"
+                               class="btn btn-secondary" th:href="@{|/zayct/courses/user/teacher/deleteContent/${contentInfo.id}|}" style="margin-bottom: 5px" >Удалить</a>
                         </td>
                     </tr>
                     </tbody>
@@ -144,18 +149,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each = "courseInfo : ${courseTest}">
-                        <td th:text="${courseInfo.fileName}"></td>
-                        <td th:text="${courseInfo.description}"></td>
+                    <tr th:each = "contentInfo : ${courseTest}">
+                        <td th:text="${contentInfo.fileName}"></td>
+                        <td th:text="${contentInfo.description}"></td>
                         <td>
-                            <a th:href="@{|/zayct/courses/list/content/download/${courseInfo.id}|}" class="btn btn-secondary" style="margin-bottom: 5px"> Скачать </a>
+                            <a th:href="@{|/zayct/courses/list/content/download/${contentInfo.id}|}" class="btn btn-secondary" style="margin-bottom: 5px"> Скачать </a>
                             <form sec:authorize="hasRole('ROLE_STUDENT')" th:action="@{|/zayct/courses/list/content/upload/homework|}" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" th:value="${courseInfo.id}" th:name="courseContentId">
+                                    <input type="hidden" th:value="${contentInfo.id}" th:name="courseContentId">
                                     <input type="hidden" th:value="TEST" th:name="type">
                                     <input type="button" id="studentSendTestAnswer" value="Выбрать файл" onclick="document.getElementById('sendTest').click();"/>
                                     <input th:name="file" type="file" style="display:none;" id="sendTest"/>
                                 <button type="submit" class="btn btn-secondary">Отправить решение</button>
                             </form>
+                            <a sec:authorize="hasRole('ROLE_TEACHER')"
+                               class="btn btn-secondary" th:href="@{|/zayct/courses/user/teacher/deleteContent/${contentInfo.id}|}" style="margin-bottom: 5px" >Удалить</a>
                         </td>
                     </tr>
                     </tbody>

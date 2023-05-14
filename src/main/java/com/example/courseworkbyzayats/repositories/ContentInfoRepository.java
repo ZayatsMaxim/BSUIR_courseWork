@@ -2,6 +2,7 @@ package com.example.courseworkbyzayats.repositories;
 
 import com.example.courseworkbyzayats.models.ContentInfo;
 import jakarta.transaction.Transactional;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -81,4 +82,21 @@ public interface ContentInfoRepository extends JpaRepository<ContentInfo,Integer
             @Param("contentType") String contentType,
             @Param("contentName") String contentName,
             @Param("description") String description);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "DELETE FROM coursecontent WHERE id=:contentId",
+            nativeQuery = true
+    )
+    void deleteContentInfoById(@Param("contentId") Integer contentId);
+
+    @Query(
+            value = "SELECT teacher_id FROM coursecontent " +
+                    "JOIN course ON course_id = course.id " +
+                    "JOIN `user` ON teacher_id = `user`.id " +
+                    "WHERE coursecontent.id = :teacherId ",
+            nativeQuery = true
+    )
+    Integer getContentTeacherId(@Param("teacherId") Integer teacherId);
 }

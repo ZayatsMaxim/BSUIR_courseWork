@@ -20,4 +20,18 @@ public interface HomeworkInfoRepository extends JpaRepository<HomeworkInfo, Inte
             nativeQuery = true
     )
     List<HomeworkInfo> getStudentHomeworkInfo(@Param("studentId") Integer studentId);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "DELETE FROM homework WHERE id = :homeworkId",
+            nativeQuery = true
+    )
+    void deleteHomeworkInfoById(@Param("homeworkId") Integer homeworkId);
+
+    @Query(
+            value = "SELECT user_id FROM homework WHERE id = :homeworkId",
+            nativeQuery = true
+    )
+    Integer getHomeworkStudentId(@Param("homeworkId") Integer homeworkId);
 }

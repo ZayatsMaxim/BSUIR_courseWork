@@ -62,7 +62,7 @@
             <div class="insideContent">
                 <div class="row row-cols-3 g-3">
                     <div class="col" th:each="homeworkInfo : ${homeworkList}">
-                        <div class="card custom-card" style="width: 18rem; height: 11rem;">
+                        <div class="card custom-card" style="width: 18rem; height: 13rem;">
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${homeworkInfo.fileName}"></h5>
                                 <p class="card-text">Оценка: <span th:text="${homeworkInfo.rating}"></span></p>
@@ -72,6 +72,7 @@
                                 <span th:text="(${homeworkInfo.rating} >= ${minRating}) ? 'Статус: сдано' : 'Статус: не сдано'"></span>
                             </span>
                                 </p>
+                                <a th:href="@{|/zayct/courses/user/myHomework/delete/${homeworkInfo.id}|}" class="btn btn-secondary">Удалить работу</a>
                             </div>
                         </div>
                         <br>

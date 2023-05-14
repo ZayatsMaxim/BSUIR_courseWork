@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,7 +96,7 @@ public class ProfileController {
             model.addAttribute("courseList", courseList);
         }
 
-        return  "studentCourses";
+        return "userMyCourses";
     }
 
     @GetMapping("/myHomework")
@@ -105,6 +107,13 @@ public class ProfileController {
         model.addAttribute("homeworkList", studentHomework);
         model.addAttribute("minRating", ContentService.MIN_RATING_TO_PASS);
         return "studentHomework";
+    }
+
+    @GetMapping("/myHomework/delete/{homeworkId}")
+    public String deleteHomework(@PathVariable Integer homeworkId){
+        Integer currentUserId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
+        contentService.deleteHomeworkById(currentUserId, homeworkId);
+        return "redirect:/zayct/courses/user/myHomework";
     }
 
     @GetMapping("/teacherHomework/page/{pageNumber}")
@@ -141,6 +150,26 @@ public class ProfileController {
         } else return "redirect:/zayct/courses/user/myHomework";
     }
 
+    @GetMapping("/teacher/deleteContent/{contentId}")
+    public String showDeleteContentAuth(@PathVariable Integer contentId,
+                                Model model) {
+        model.addAttribute("contentId", contentId);
+        return "contentDeleteAuth";
+    }
+
+    @PostMapping("/teacher/deleteContent/{contentId}")
+    public ResponseEntity<String> deleteContent(@PathVariable Integer contentId,
+                                        @RequestParam String password) {
+
+        User teacher = userDetailsService.getCurrentLoggedUserDetails().getUser();
+        System.out.println(password);
+        if (userDetailsService.identifyUserByCredentials(teacher.getId(), password)) {
+            contentService.deleteContentInfo(teacher.getId(), contentId);
+            return new ResponseEntity<>("Successfully deleted content! Status code: ", HttpStatus.OK);
+        }
+        else return new ResponseEntity<>("You entered the wrong password, try again!", HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping("/update")
     public String showUpdateForm(Model model) {
         UserUpdateDTO updateInfo = new UserUpdateDTO();
@@ -151,11 +180,11 @@ public class ProfileController {
     @PostMapping("/update")
     public String updateInfo(@Valid @ModelAttribute("userToUpdate") UserUpdateDTO updateInfo,
                              BindingResult result){
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return "updateProfile";
         }
 
-        try{
+        try {
             userDetailsService.updateUserInfo(updateInfo);
         } catch (AlreadyInUseException e) {
             ObjectError ValidationError = new ObjectError("globalError", e.getMessage());
@@ -168,7 +197,7 @@ public class ProfileController {
     @PostMapping("/updateAvatar")
     public String updateUserAvatar(@RequestParam("avatar") MultipartFile avatar,
                                    Model model) throws IOException, FileUploadException {
-        try{
+        try {
             Integer userId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
             userDetailsService.updateAvatar(userId,avatar);
         } catch (IOException | FileUploadException e){
@@ -180,9 +209,9 @@ public class ProfileController {
     }
 
     @GetMapping("/admin/teacherRegister")
-    public String showRegisterTeacherPage(Model model){
+    public String showRegisterTeacherPage(Model model) {
         UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
-        if (currentUserDetails.getAuthorities().contains(ADMIN)){
+        if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             User newUser = new User();
 
             model.addAttribute("newUser", newUser);
@@ -197,7 +226,8 @@ public class ProfileController {
         if (result.hasErrors()) {
             return "adminTeacherRegister";
         }
-        try{
+
+        try {
             newUser.setRole("ROLE_TEACHER");
             registrationService.saveUser(newUser);
         } catch (AlreadyInUseException e) {
@@ -276,7 +306,7 @@ public class ProfileController {
     }
 
     @GetMapping("/admin/groupsList/page/{pageNumber}")
-    public String getGroupsList(@PathVariable Integer pageNumber, Model model){
+    public String getGroupsList(@PathVariable Integer pageNumber, Model model) {
         UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
         if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             Page<Group> groupsPage = groupService.getAllGroupsPage(pageNumber);
@@ -294,7 +324,7 @@ public class ProfileController {
     }
 
     @GetMapping("/admin/createGroup")
-    public String showCreateGroupPage(Model model){
+    public String showCreateGroupPage(Model model) {
         UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
         if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             Group newGroup = new Group();
@@ -305,7 +335,7 @@ public class ProfileController {
     }
 
     @PostMapping ("/admin/createGroup")
-    public String createNewGroup(@ModelAttribute("newGroup") Group newGroup){
+    public String createNewGroup(@ModelAttribute("newGroup") Group newGroup) {
         UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
         if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             groupService.saveGroup(newGroup);
@@ -315,7 +345,7 @@ public class ProfileController {
     }
 
     @GetMapping("/admin/groupInfo/{groupId}")
-    public String getGroupInfo(@PathVariable Integer groupId, Model model){
+    public String getGroupInfo(@PathVariable Integer groupId, Model model) {
         UserSecurityDetails currentUserDetails = userDetailsService.getCurrentLoggedUserDetails();
         if (currentUserDetails.getAuthorities().contains(ADMIN)) {
             Group requestedGroup = groupService.getGroupById(groupId);

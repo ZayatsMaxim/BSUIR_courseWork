@@ -9,21 +9,30 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(
-            value = "SELECT u.username FROM user u WHERE u.username = :username ", nativeQuery = true)
+            value = "SELECT u.username FROM user u WHERE u.username = :username ",
+            nativeQuery = true)
     String getUsername(@Param("username") String username);
 
     @Query(
-           value = "SELECT * FROM user u WHERE u.username = :username ", nativeQuery = true)
+           value = "SELECT * FROM user u WHERE u.username = :username ",
+            nativeQuery = true)
     User getUserByUsername(@Param("username") String username);
+
+    @Query(
+            value = "SELECT * FROM `user` WHERE id=:id",
+            nativeQuery = true
+    )
+    User getUserById(@Param("id") Integer id);
+
 
     @Modifying
     @Transactional
@@ -102,4 +111,25 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             nativeQuery = true
     )
     List<User> findGroupStudents(@Param("groupId") Integer groupId);
+
+    @Query(
+            value = "SELECT teacher_id FROM course WHERE id=:courseId",
+            nativeQuery = true
+    )
+    Integer getCourseTeacherId(@Param("courseId") Integer courseId);
+
+    @Query(
+            value = "SELECT course_id FROM studentsgroups " +
+                    "JOIN `group` ON group_id = `group`.id " +
+                    "WHERE student_id = :studentId AND course_id=:courseId",
+            nativeQuery = true
+    )
+    Optional<Integer> getCourseIdIfUserIsItsStudent(@Param("studentId") Integer studentId,
+                                                    @Param("courseId") Integer courseId);
+
+    @Query(
+            value = "SELECT * FROM `user`",
+            nativeQuery = true
+    )
+    List<User> getAllUsersForJSON();
 }
