@@ -63,28 +63,56 @@
             <div class="insideContent">
                 <form sec:authorize="hasRole('ROLE_ADMIN')"
                       th:action="@{/zayct/courses/list/addCourse}"
-                      method="post" th:object="${newCourse}" th:name="newCourse" enctype="multipart/form-data">
+                      method="post"
+                      th:object="${newCourse}"
+                      th:name="newCourse"
+                      enctype="multipart/form-data"
+                      id="courseForm"
+                >
                     <div class="form-row">
                         <div class="col">
                             <label for="courseNameInput">Введите имя курса</label>
-                            <input id="courseNameInput" type="text" class="form-control col-5" th:field="*{name}" placeholder="Имя курса..." style="margin-bottom: 5px">
+                            <input id="courseNameInput"
+                                   value=""
+                                   required
+                                   type="text" class="form-control col-5" th:field="*{name}" placeholder="Имя курса..." style="margin-bottom: 5px">
 
                             <label for="courseDescInput">Введите описание курса (до 100 симолов)</label>
-                            <input id="courseDescInput" type="text" class="form-control col-5" th:field="*{description}" placeholder="Описание..." style="margin-bottom: 5px">
+                            <input value=""
+                                   required
+                                   id="courseDescInput"
+
+                                   type="text" class="form-control col-5" th:field="*{description}" placeholder="Описание..." style="margin-bottom: 5px">
 
                             <label for="courseTeacherIdInput">Введите ID преподавателя</label>
-                            <input id="courseTeacherIdInput" type="text" class="form-control col-5" th:value="*{teacherId}" th:name="teacherId" placeholder="ID..." style="margin-bottom: 5px">
+                            <input value=""
+                                   required
+                                   id="courseTeacherIdInput"
+                                   type="text"
+
+                                   class="form-control col-5" th:value="*{teacherId}" th:name="teacherId" placeholder="ID..." style="margin-bottom: 5px">
 
                             <label for="courseTestAmountInput">Введите количество тестов для прохождения</label>
-                            <input id="courseTestAmountInput" type="text" class="form-control col-5" th:field="*{testToPassAmount}" placeholder="Количество тестов..." style="margin-bottom: 5px">
+                            <input value=""
+                                   required
+                                   id="courseTestAmountInput"
+                                   type="text"
 
-                            <input type="button" id="courseIconInputButton" class="form-control col-3" value="Выбрать иконку"
-                                   onclick="document.getElementById('courseIconInput').click();"
+                                   class="form-control col-5"
+                                   th:field="*{testToPassAmount}" placeholder="Количество тестов..." style="margin-bottom: 5px">
+
+                            <input type="button"
+                                   id="courseIconInputButton"
+                                   class="form-control col-3"
+                                   value="Выбрать иконку"
                                    style="margin-bottom: 5px"
+                                   onclick="document.getElementById('courseIconInput').click();"
                             />
                             <input id="courseIconInput" type="file" th:name="iconFile" style="display:none;">
 
-                            <button type="submit" class="btn btn-secondary col-2">Сохранить курс</button>
+                            <button id="submitButton"
+                                    type="submit"
+                                    class="btn btn-secondary col-2">Сохранить курс</button>
 
                         </div>
 

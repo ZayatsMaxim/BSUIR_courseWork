@@ -20,18 +20,23 @@ public class FileValidator {
         }
         switch (fileType){
             case "AVATAR":
-               if((Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "jpg")
+               if(( Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "jpg")
                        || Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "png"))) {
-                   log.warn("Получен аватар неправильного формата: " + file.getResource() + " тип: " + fileType);
+                  break;
+               } else {
+                   log.warn("Получен аватар неправильного формата: " + file.getResource().getFilename() + " тип: " + fileType);
                    throw new FileUploadException("Выбранный формат аватара не допускается! Выберете JPG или PNG");
                }
-                break;
             case "HOMEWORK":
                 // TO DO: validate homework!
                 break;
             case "CONTENT":
                 // TO DO: validate content!
                 break;
+            case "JSON":
+                if (!Objects.equals(FilenameUtils.getExtension(file.getOriginalFilename()), "json")) {
+                    throw new FileUploadException("Данные из выбранного файла нельзя импортировать! Выберите JSON");
+                }
         }
 
     }

@@ -88,6 +88,7 @@
                         <br>
                     </div>
                 </div>
+
                 <br>
                 <div th:if="${totalPages > 1}">
                     <div class="row col-sm-10">
@@ -102,6 +103,8 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/zayct/stats/usersJSON}" class="btn btn-secondary col-4" th:method="GET">Экспорт списка всех пользователей в JSON</a>
             </div>
         </div>
     </div>

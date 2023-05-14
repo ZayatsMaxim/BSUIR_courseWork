@@ -64,10 +64,10 @@
         <div class="form-row">
           <div class="col">
             <label for="loginInput">Имя группы</label>
-            <input id="loginInput" type="text" class="form-control col-5" th:field="*{name}" placeholder="Имя...">
+            <input required id="loginInput" type="text" class="form-control col-5" th:field="*{name}" placeholder="Имя...">
 
             <label for="passwordInput">ID курса</label>
-            <input id="passwordInput" type="text" class="form-control col-5" th:field="*{courseId}" placeholder="ID курса...">
+            <input required id="passwordInput" type="text" class="form-control col-5" th:field="*{courseId}" placeholder="ID курса...">
 
             <br>
             <button type="submit" class="btn btn-secondary col-2">Создать группу</button>

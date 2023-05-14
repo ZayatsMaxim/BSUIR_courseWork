@@ -18,7 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -152,5 +155,18 @@ public class ContentService {
     public String saveCourseIcon(MultipartFile file) throws IOException, FileUploadException {
         fileRepository.save(file, COURSE_ICON_REPO_PATH + file.getOriginalFilename());
         return file.getOriginalFilename();
+    }
+
+    public void deleteHomeworkById(Integer studentId,Integer homeworkId){
+        if (Objects.equals(studentId, homeworkInfoRepository.getHomeworkStudentId(homeworkId))){
+            homeworkInfoRepository.deleteHomeworkInfoById(homeworkId);
+        }
+    }
+
+    public void deleteContentInfo(Integer teacherId, Integer contentId){
+        Integer courseOfContentTeacher = contentInfoRepository.getContentTeacherId(contentId);
+        if (Objects.equals(teacherId, courseOfContentTeacher)) {
+            contentInfoRepository.deleteContentInfoById(contentId);
+        }
     }
 }

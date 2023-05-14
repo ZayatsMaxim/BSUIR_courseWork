@@ -116,24 +116,28 @@ public class CoursesListController {
 
     @GetMapping(value = "/content/{courseId}")
     public String getCourseContent(@PathVariable Integer courseId, Model model) {
-        Integer currentUserId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
-        List<ContentInfo> courseTheory = contentService.getCourseTheory(courseId);
-        List<ContentInfo> courseHomework = contentService.getCourseHomework(courseId);
-        List<ContentInfo> courseTest = contentService.getCourseTest(courseId);
-        Short testToPassAmount = contentService.getTestToPassAmount(courseId);
-        Double courseCompletion = contentService.getStudentCourseCompletionPercent(currentUserId, courseId);
-        ContentInfo contentInfo = new ContentInfo();
+        Integer userId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
+
+        if (userDetailsService.identityUserForContentPreview(userId, courseId)) {
+            List<ContentInfo> courseTheory = contentService.getCourseTheory(courseId);
+            List<ContentInfo> courseHomework = contentService.getCourseHomework(courseId);
+            List<ContentInfo> courseTest = contentService.getCourseTest(courseId);
+            Short testToPassAmount = contentService.getTestToPassAmount(courseId);
+            Double courseCompletion = contentService.getStudentCourseCompletionPercent(userId, courseId);
+            ContentInfo contentInfo = new ContentInfo();
 
 
-        model.addAttribute("courseTheory", courseTheory);
-        model.addAttribute("courseHomework", courseHomework);
-        model.addAttribute("courseTest", courseTest);
-        model.addAttribute("testToPassAmount", testToPassAmount);
-        model.addAttribute("completion", courseCompletion);
-        model.addAttribute("contentInfo",contentInfo);
-        model.addAttribute("courseId", courseId);
+            model.addAttribute("courseTheory", courseTheory);
+            model.addAttribute("courseHomework", courseHomework);
+            model.addAttribute("courseTest", courseTest);
+            model.addAttribute("testToPassAmount", testToPassAmount);
+            model.addAttribute("completion", courseCompletion);
+            model.addAttribute("contentInfo",contentInfo);
+            model.addAttribute("courseId", courseId);
 
-        return "courseContent";
+            return "courseContent";
+        }
+        return "redirect:/zayct/courses/user";
     }
 
     @GetMapping(value = "/content/download/{contentId}")
@@ -183,13 +187,19 @@ public class CoursesListController {
                                 @RequestParam("contentName") String contentName,
                                 @RequestParam("description") String description,
                                 Model model) throws IOException {
-        Integer currentUserId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
-        try {
-            contentService.saveContent(file,currentUserId,courseId,contentType,contentName,description);
-        } catch (IOException | FileUploadException e){
-            model.addAttribute("errorMessage",e.getMessage());
-            return "uploadFailed";
+
+        Integer teacherId = userDetailsService.getCurrentLoggedUserDetails().getUser().getId();
+        if (userDetailsService.identifyTeacherForCourse(teacherId, courseId)) {
+            try {
+                contentService.saveContent(file,teacherId,courseId,contentType,contentName,description);
+            } catch (IOException | FileUploadException e){
+                model.addAttribute("errorMessage",e.getMessage());
+                return "uploadFailed";
+            }
+
+            return "redirect:/zayct/courses/list/content/" + courseId;
         }
+
         return "redirect:/zayct/courses/user/myCourses/page/1";
     }
 
@@ -207,8 +217,13 @@ public class CoursesListController {
     @PostMapping("/addCourse")
     public String addCourse(@RequestParam(value = "iconFile", required = false) MultipartFile file,
                             @ModelAttribute("newCourse") CourseSaveDTO newCourse,
-                            @RequestParam("teacherId") Integer teacherId,
+                            @RequestParam(value = "teacherId", required = false) Integer teacherId,
                             Model model) throws IOException, FileUploadException {
+
+        if (teacherId == null){
+            model.addAttribute("errorMessage", "Вы не ввели ID преподавателя!");
+            return "uploadFailed";
+        }
 
         try{
             String savedIconName = contentService.saveCourseIcon(file);

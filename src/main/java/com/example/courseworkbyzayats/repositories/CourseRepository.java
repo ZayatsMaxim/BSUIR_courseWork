@@ -11,7 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer> {
@@ -91,4 +93,22 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             nativeQuery = true
     )
     String getCourseNameById(@Param("courseId") Integer courseId);
+
+    @Query(
+            value = "SELECT course_id,sum(studAmount) AS total_stud FROM (\n" +
+                    "\tSELECT course_id,group_id,count(*) AS studAmount FROM studentsgroups\n" +
+                    "\tJOIN `group` ON `group`.id = group_id \n" +
+                    "\tGROUP by group_id order by studAmount DESC\n" +
+                    ") t1\n" +
+                    "GROUP BY course_id order by total_stud DESC ",
+            nativeQuery = true
+    )
+    HashMap<String, Integer> getCoursesSortedByTotalStudents();
+
+    @Query(
+            value = "SELECT * FROM courseAndTeacher",
+            nativeQuery = true
+    )
+    List<Course> getAllCoursesForJSON();
+
 }

@@ -32,6 +32,8 @@ public class SecurityConfig {
                         .requestMatchers("/styles/**").permitAll()
                         .requestMatchers("/scripts/**").permitAll()
                         .requestMatchers("/zayct/courses/signup/**").permitAll()
+                        .requestMatchers("/zayct/stats/**").hasRole("ADMIN")
+                        .requestMatchers("/zayct/import/**").hasRole("ADMIN")
                         .requestMatchers("/zayct/courses/list/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
                         .requestMatchers("/zayct/courses/user/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
                         .anyRequest().authenticated()

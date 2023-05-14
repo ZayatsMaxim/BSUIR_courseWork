@@ -91,6 +91,12 @@
             </div>
             <hr>
             <a th:href="@{/zayct/courses/user/admin/createGroup}" class="btn btn-secondary col-2">Создать новую группу</a>
+            <a th:href="@{/zayct/stats/groupsJSON}" class="btn btn-secondary" th:method="GET">Экспорт списка в JSON</a>
+            <form th:action="@{/zayct/import/groups}" th:method="POST" enctype="multipart/form-data">
+                <input type="button" id="jsonImport" value="Выбрать файл" onclick="document.getElementById('jsonFile').click();" />
+                <input type="file" style="display:none;" id="jsonFile" name="file" />
+                <button type="submit" class="btn btn-secondary" style="margin-top: 5px">Импорт списка из JSON</button>
+            </form>
             <br>
         </div>
     </div>

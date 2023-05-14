@@ -79,51 +79,22 @@
           </div>
         </div>
 
-        <div th:if="${totalPages > 1}">
+        <div th:if="${totalPages > 1}" style="margin-top: 10px">
           <div class="row col-sm-10">
             <div class="col-sm-2">
               Всего курсов: [[${totalItems}]]
             </div>
             <div class="col-sm-1">
                   <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <a th:if="${currentPage != i}" th:href="@{'/zayct/courses/user/myCourses/list/page/' + ${i}}">[[${i}]]</a>
+                    <a th:if="${currentPage != i}" th:href="@{'/zayct/courses/user/myCourses/page/' + ${i}}">[[${i}]]</a>
                     <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
                   </span>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
-
-    <!--<table border="1" class="table table-striped table-responsive-md">
-      <thead>
-      <tr>
-        <th>icon</th>
-        <th>Название курса</th>
-        <th>Преподаватель</th>
-        <th>Действия</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="course : ${courseList}">
-        <td>
-          <img th:src="${course.icon}" th:size="150x150"/>
-        </td>
-        <td th:text="${course.name}"></td>
-        <td th:text="${course.teacherName}"></td>
-        <td>
-          <a th:href="@{|/zayct/courses/list/info/${course.id}|}" class="btn btn-primary"> Подробнее </a>
-          <a th:href="@{|/zayct/courses/list/content/${course.id}|}" class="btn btn-primary"> Задания </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
--->
-
-
 </body>
 
 </html>

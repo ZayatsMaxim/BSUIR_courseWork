@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+  <!-- Optional theme -->
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+</head>
+<body>
+<div class="container">
+  <h2 align="center">Сравнение курсов по количеству студентов</h2>
+
+  <div id="container"
+       style="width: 1000px; height: 600px; margin: 0 auto; font-size: 20px"></div>
+  <br>
+  <a th:href="@{/zayct/courses/list/page/1}" class="btn btn-primary">Назад к списку курсов</a>
+</div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+  $(function(){
+    Highcharts.chart('container', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Курсы'
+      },
+      subtitle: {
+        text: 'Курсы'
+      },
+      xAxis: {
+        categories: [[${courses}]],
+        crosshair: true,
+        labels: {
+          style : {
+            fontSize: '20px'
+          }
+        }
+      },
+      yAxis: {
+        min: 0,
+        max:20,
+        title: {
+          text: 'Количество студентов',
+          style: {
+            fontSize: '20px'
+          }
+        },
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:20px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0; font-size: 10px">{series.name}: </td>' +
+                '<td style="padding:0; font-size: 10px"><b>{point.y:.1f} K</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0
+        }
+      },
+      series: [{
+        name: 'Количество студентов',
+        data: [[${studentsAmounts}]]
+      }]
+    });
+  });
+</script>
+
+</body>
+</html>
